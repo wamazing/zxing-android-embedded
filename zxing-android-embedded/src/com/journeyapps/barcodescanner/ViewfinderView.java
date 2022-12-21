@@ -26,6 +26,8 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
+
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.R;
 
@@ -149,6 +151,43 @@ public class ViewfinderView extends View {
 
         final int width = getWidth();
         final int height = getHeight();
+
+        Paint borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        borderPaint.setColor(ContextCompat.getColor(getContext(), R.color.zxing_viewfinder_laser));
+
+        float rectHeightSize = 2.5f;
+        float rectWidthSize = 4.5f;
+
+        int topH = (int) (height / rectHeightSize);
+        int bottomH = (int) (height - (topH * 2)) + topH;
+
+        int leftW = (int) (width / rectWidthSize);
+        int rightW = (int) (width - (leftW * 2)) + leftW;
+
+        frame.top = topH;
+        frame.bottom = bottomH;
+        frame.left = leftW;
+        frame.right = rightW;
+
+        //inside onDraw
+        int distance = (frame.bottom - frame.top) / 6;
+        int thickness = 10;
+
+        //top left corner
+        canvas.drawRect(frame.left - thickness, frame.top - thickness, distance + frame.left, frame.top, borderPaint);
+        canvas.drawRect(frame.left - thickness, frame.top, frame.left, distance + frame.top, borderPaint);
+
+        //top right corner
+        canvas.drawRect(frame.right - distance, frame.top - thickness, frame.right + thickness, frame.top, borderPaint);
+        canvas.drawRect(frame.right, frame.top, frame.right + thickness, distance + frame.top, borderPaint);
+
+        //bottom left corner
+        canvas.drawRect(frame.left - thickness, frame.bottom, distance + frame.left, frame.bottom + thickness, borderPaint);
+        canvas.drawRect(frame.left - thickness, frame.bottom - distance, frame.left, frame.bottom, borderPaint);
+
+        //bottom right corner
+        canvas.drawRect(frame.right - distance, frame.bottom, frame.right + thickness, frame.bottom + thickness, borderPaint);
+        canvas.drawRect(frame.right, frame.bottom - distance, frame.right + thickness, frame.bottom, borderPaint);
 
         // Draw the exterior (i.e. outside the framing rect) darkened
         paint.setColor(resultBitmap != null ? resultColor : maskColor);
