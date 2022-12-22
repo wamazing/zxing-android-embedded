@@ -6,6 +6,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
 
@@ -16,8 +17,8 @@ subprojects {
         mavenCentral()
     }
 
-    version = '4.3.0'
-    group = 'com.journeyapps'
+//    version = '4.3.1'
+//    group = 'com.github.wamazing'
 
     ext.androidTargetSdk = 30
     ext.zxingCore = 'com.google.zxing:core:3.4.1'
